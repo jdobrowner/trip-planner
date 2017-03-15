@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FilterPanel from './filter-panel';
 import GridPanel from './grid-panel';
-import DetailsPanel from './details-panel';
 
 export default class App extends Component {
   constructor() {
@@ -10,9 +9,13 @@ export default class App extends Component {
   render() {
     return (
       <div className="app">
+        <h1>Trip Planner</h1>
         <FilterPanel />
         <GridPanel />
-        <DetailsPanel />
+
+        {/* display the Details Panel only when the route is set to /details (see ../routes.js) */}
+        {this.props.children}
+
       </div>
     )
   }

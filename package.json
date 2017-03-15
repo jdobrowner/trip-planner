@@ -13,6 +13,7 @@
     "build:css": "rm -f dist/style.css && lessc style/style.less --clean-css dist/style.css",
     "build:html": "rm -f dist/index.html && cp index.html dist/",
     "build": "rm -rf dist && mkdir -p dist && npm run build:html && npm run build:css && npm run build:js",
+    "watch:js": "webpack --watch",
     "watch:css": "npm run build:css && chokidar-cmd -c 'npm run build:css' -t style/**/*.less",
     "watch": "webpack --watch & npm run watch:css"
   },
@@ -25,7 +26,8 @@
     "react-router": "^3.0.2",
     "react-widgets": "^3.4.6",
     "redux": "^3.6.0",
-    "redux-form": "^6.5.0"
+    "redux-form": "^6.5.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",

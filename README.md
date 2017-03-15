@@ -1,2 +1,1 @@
-# Satellite House
-## Ojai, CA
+# Trip Planner

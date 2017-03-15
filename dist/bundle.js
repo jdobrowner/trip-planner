@@ -10401,6 +10401,11 @@ var App = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'app' },
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Trip Planner'
+        ),
         _react2.default.createElement(_filterPanel2.default, null),
         _react2.default.createElement(_gridPanel2.default, null),
         _react2.default.createElement(_detailsPanel2.default, null)
@@ -10541,13 +10546,50 @@ var FilterPanel = function (_Component) {
   function FilterPanel() {
     _classCallCheck(this, FilterPanel);
 
-    return _possibleConstructorReturn(this, (FilterPanel.__proto__ || Object.getPrototypeOf(FilterPanel)).call(this));
+    var _this = _possibleConstructorReturn(this, (FilterPanel.__proto__ || Object.getPrototypeOf(FilterPanel)).call(this));
+
+    _this.filterGrid = _this.filterGrid.bind(_this);
+    return _this;
   }
 
   _createClass(FilterPanel, [{
+    key: "filterGrid",
+    value: function filterGrid(event) {
+      event.preventDefault();
+      console.log(event.target.value);
+    }
+  }, {
     key: "render",
     value: function render() {
-      return _react2.default.createElement("div", { className: "filter-panel" });
+      return _react2.default.createElement(
+        "div",
+        { className: "filter-panel" },
+        _react2.default.createElement(
+          "h2",
+          null,
+          "boob Panel"
+        ),
+        _react2.default.createElement(
+          "form",
+          { onSubmit: this.filterGrid },
+          _react2.default.createElement(
+            "label",
+            { htmlFor: "filterText" },
+            "Filter by Keyword"
+          ),
+          _react2.default.createElement("input", { type: "text", name: "filterText" }),
+          _react2.default.createElement(
+            "button",
+            { type: "submit" },
+            "Go"
+          )
+        ),
+        _react2.default.createElement(
+          "button",
+          null,
+          "New Trip"
+        )
+      );
     }
   }]);
 

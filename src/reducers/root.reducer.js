@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import savedTrips from './saved-trips.reducer';
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  savedTrips
 });
 
 export default rootReducer;

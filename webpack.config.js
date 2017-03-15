@@ -35,12 +35,12 @@ module.exports = {
     ],
   },
   output: {
-    path: path.resolve(__dirname),
-    filename: 'dist/bundle.js'
+    path: path.resolve(__dirname, 'dist/'),
+    filename: 'bundle.js'
   },
   plugins: plugins,
   devServer: {
     historyApiFallback: true,
-    contentBase: './dist'
+    contentBase: 'dist'
   }
 };

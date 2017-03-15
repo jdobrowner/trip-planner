@@ -8,8 +8,8 @@ describe('App', () => {
     expect(component).to.have.class('app');
   });
 
-  it('has 3 child divs', () => {
-    expect(component.find('div')).to.have.lengthOf(3);
+  it('has 2 child divs when first loaded', () => {
+    expect(component.find('div')).to.have.lengthOf(2);
   });
 
   it('has the filter panel', () => {
@@ -20,7 +20,4 @@ describe('App', () => {
     expect(component.find('div')).to.have.class('grid-panel');
   });
 
-  it('has the details', () => {
-    expect(component.find('div')).to.have.class('details-panel');
-  });
 });
