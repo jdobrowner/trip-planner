@@ -24,15 +24,11 @@ class GridPanel extends Component {
       // if the trip is not of the same category as the filter, move on to next trip
       if (!passThrough) return false;
 
-      console.log('trip passed so far', trip)
-
       const keyword = this.props.filter.keyword.toLowerCase();
-      console.log('keyword', keyword);
 
       const todoFilterPass = trip.todos.reduce((pass, todo) => {
         return pass || todo.thingToDo.toLowerCase().includes(keyword);
       }, false);
-      console.log('passed todo filter?', todoFilterPass);
 
       // if the filter keyword exists within the todo list, title, or destination
       // add the trip to the filtered list by returning true

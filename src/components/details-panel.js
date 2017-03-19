@@ -22,7 +22,7 @@ class DetailsPanel extends Component {
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onStartDateChange = this.onStartDateChange.bind(this);
     this.onEndDateChange = this.onEndDateChange.bind(this);
-    this.setTripLength = this.setTripLength.bind(this);
+    this.setTripDuration = this.setTripDuration.bind(this);
     this.onReminderDateChange = this.onReminderDateChange.bind(this);
     this.onReminderCheckboxChange = this.onReminderCheckboxChange.bind(this);
     this.updateTodos = this.updateTodos.bind(this);
@@ -45,13 +45,13 @@ class DetailsPanel extends Component {
   }
   onStartDateChange(value) {
     this.setState({ startDate: value });
-    this.setTripLength(value, this.state.endDate);
+    this.setTripDuration(value, this.state.endDate);
   }
   onEndDateChange(value) {
     this.setState({ endDate: value });
-    this.setTripLength(this.state.startDate, value);
+    this.setTripDuration(this.state.startDate, value);
   }
-  setTripLength(startDay, endDay) {
+  setTripDuration(startDay, endDay) {
     if (startDay && endDay) {
       const tripLengthMil = endDay.getTime() - startDay.getTime();
       let tripLengthDays = Math.ceil(tripLengthMil / (1000 * 60 * 60 * 24 ));
@@ -61,10 +61,10 @@ class DetailsPanel extends Component {
     }
   }
   onReminderDateChange(value) {
-    console.log(value);
     this.setState({ reminderDate: value });
   }
-  onReminderCheckboxChange() {
+  onReminderCheckboxChange(event) {
+    console.log('reminder input event', event)
     this.setState({ isReminderOn: !this.state.isReminderOn });
   }
   updateTodos(todos) {
@@ -74,14 +74,19 @@ class DetailsPanel extends Component {
     event.preventDefault();
     const trip = { ...this.state };
 
-    // if the trip already exists
-    if (this.props.selectedTrip.ID) this.props.updateTrip(trip);
+    if (trip.isReminderOn && !trip.reminderDate) {
+      alert('Please pick a reminder date and time.');
+    }
+    else {
+      // if the trip already exists
+      if (this.props.selectedTrip.ID) this.props.updateTrip(trip);
 
-    // if it is a new trip
-    else this.props.saveTrip(trip);
+      // if it is a new trip
+      else this.props.saveTrip(trip);
 
-    // reset the currently selected trip
-    this.props.selectTrip(trip);
+      // reset the currently selected trip
+      this.props.selectTrip(trip);
+    }
   }
   cancelButton() {
     if (this.props.selectedTrip.ID) return <button type="button" onClick={this.cancelTrip}>Cancel</button>
@@ -95,7 +100,6 @@ class DetailsPanel extends Component {
     this.props.selectTrip({});
   }
   setTripState(trip) {
-    console.log('startDate', trip.startDate);
     this.setState({
       ID: trip.ID || new Date().getTime(),
       title: trip.title || '',
@@ -164,9 +168,8 @@ class DetailsPanel extends Component {
           </div>
 
           <div className="form-div">
-            <label>Set Reminder<input type="checkbox" checked={this.state.isReminderOn} onChange={this.onReminderCheckboxChange} />
+            <label>Set Reminder<input type="checkbox" checked={this.state.isReminderOn} onChange={this.onReminderCheckboxChange} /></label>
               <DateTimePicker min={new Date()} value={this.state.reminderDate} onChange={ this.onReminderDateChange }/>
-            </label>
           </div>
 
           <TodoList updateTodos={this.updateTodos} todos={this.state.todos} tripID={this.state.ID}/>
