@@ -2,23 +2,32 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Calendar, DateTimePicker } from 'react-widgets';
+import Moment from 'moment';
+var momentLocalizer = require('react-widgets/lib/localizers/moment');
+momentLocalizer(Moment);
+
 import saveTrip from '../actions/save-trip.action';
+import updateTrip from '../actions/update-trip.action';
+import selectTrip from '../actions/select-trip.action';
 import deleteTrip from '../actions/delete-trip.action';
+import TodoList from './todo-list.js';
 
 class DetailsPanel extends Component {
   constructor() {
     super();
-    this.state = {
-      title: '',
-      destination: '',
-      description: '',
-      category: 'none'
-    };
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onDestinationChange = this.onDestinationChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.onCategoryChange = this.onCategoryChange.bind(this);
+    this.onStartDateChange = this.onStartDateChange.bind(this);
+    this.onEndDateChange = this.onEndDateChange.bind(this);
+    this.setTripLength = this.setTripLength.bind(this);
+    this.onReminderDateChange = this.onReminderDateChange.bind(this);
+    this.onReminderCheckboxChange = this.onReminderCheckboxChange.bind(this);
+    this.updateTodos = this.updateTodos.bind(this);
     this.saveTrip = this.saveTrip.bind(this);
+    this.cancelButton = this.cancelButton.bind(this);
     this.cancelTrip = this.cancelTrip.bind(this);
     this.deleteTrip = this.deleteTrip.bind(this);
   }
@@ -34,54 +43,143 @@ class DetailsPanel extends Component {
   onCategoryChange(event) {
     this.setState({ category: event.target.value });
   }
+  onStartDateChange(value) {
+    this.setState({ startDate: value });
+    this.setTripLength(value, this.state.endDate);
+  }
+  onEndDateChange(value) {
+    this.setState({ endDate: value });
+    this.setTripLength(this.state.startDate, value);
+  }
+  setTripLength(startDay, endDay) {
+    if (startDay && endDay) {
+      const tripLengthMil = endDay.getTime() - startDay.getTime();
+      let tripLengthDays = Math.ceil(tripLengthMil / (1000 * 60 * 60 * 24 ));
+      // if (tripLengthDays > 1) tripLengthDays += ' days';
+      // else tripLengthDays += ' day';
+      this.setState({ duration: tripLengthDays });
+    }
+  }
+  onReminderDateChange(value) {
+    console.log(value);
+    this.setState({ reminderDate: value });
+  }
+  onReminderCheckboxChange() {
+    this.setState({ isReminderOn: !this.state.isReminderOn });
+  }
+  updateTodos(todos) {
+    this.setState({ todos });
+  }
   saveTrip(event) {
     event.preventDefault();
-    const trip = { ...this.state }
-    console.log(trip);
-    this.props.saveTrip(trip);
+    const trip = { ...this.state };
+
+    // if the trip already exists
+    if (this.props.selectedTrip.ID) this.props.updateTrip(trip);
+
+    // if it is a new trip
+    else this.props.saveTrip(trip);
+
+    // reset the currently selected trip
+    this.props.selectTrip(trip);
+  }
+  cancelButton() {
+    if (this.props.selectedTrip.ID) return <button type="button" onClick={this.cancelTrip}>Cancel</button>
   }
   cancelTrip() {
-    console.log('trip canceled');
-    browserHistory.push('/');
+    this.setTripState({ ...this.props.selectedTrip });
   }
   deleteTrip() {
-    const tripTitle = this.state.title;
-    this.props.deleteTrip(tripTitle);
-    console.log('trip deleted');
-    browserHistory.push('/');
+    const tripID = this.state.ID;
+    this.props.deleteTrip(tripID);
+    this.props.selectTrip({});
+  }
+  setTripState(trip) {
+    console.log('startDate', trip.startDate);
+    this.setState({
+      ID: trip.ID || new Date().getTime(),
+      title: trip.title || '',
+      destination: trip.destination || '',
+      description: trip.description || '',
+      category: trip.category || 'none',
+      todos: trip.todos || [],
+      startDate: trip.startDate ? new Date(trip.startDate) : null,
+      endDate: trip.endDate ? new Date(trip.endDate) : null,
+      duration: trip.duration || 'No Dates',
+      reminderDate: trip.reminderDate ? new Date(trip.reminderDate) : null,
+      isReminderOn: trip.isReminderOn || false
+    });
+  }
+  componentWillMount() {
+    this.setTripState({ ...this.props.selectedTrip });
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setTripState({ ...nextProps.selectedTrip });
   }
   render() {
     return (
       <div className="details-panel">
-        <h2>Details Panel</h2>
 
         <form onSubmit={this.saveTrip}>
-          <label>Title
-            <input type="text" value={this.state.title} onChange={this.onTitleChange} autoFocus="autofocus" />
-          </label>
+          <div className="form-div">
+            <label>Trip Title<br/>
+              <input type="text" value={this.state.title} onChange={this.onTitleChange} autoFocus="autofocus" />
+            </label>
+          </div>
 
-          <label>Destination
-            <input type="text" value={this.state.destination} onChange={this.onDestinationChange} />
-          </label>
+          <div className="form-div">
+            <label>Destination<br/>
+              <input type="text" value={this.state.destination} onChange={this.onDestinationChange} />
+            </label>
+          </div>
 
-          <label>Description
-            <textarea value={this.state.description} onChange={this.onDescriptionChange} />
-          </label>
+          <div className="form-div">
+            <label>Description<br/>
+              <textarea value={this.state.description} onChange={this.onDescriptionChange} />
+            </label>
+          </div>
 
-          <label>Category
-            <select value={this.state.category} onChange={this.onCategoryChange}>
-              <option value="none">None</option>
-              <option value="vacation">Vacation</option>
-              <option value="business">Business</option>
-            </select>
-          </label>
+          <div className="form-div">
+            <label>Category<br/>
+              <select value={this.state.category} onChange={this.onCategoryChange}>
+                <option value="None">None</option>
+                <option value="Vacation">Vacation</option>
+                <option value="Business">Business</option>
+              </select>
+            </label>
+          </div>
 
-          <button type="submit">Save</button>
+          <div className="form-div">
+            <label>Start Date<br/>
+              <DateTimePicker time={false} min={new Date()} value={this.state.startDate}
+                onChange={ this.onStartDateChange }/>
+            </label>
+          </div>
+
+          <div className="form-div">
+            <label>End Date<br/>
+              <DateTimePicker time={false} min={this.state.startDate || new Date()}
+                value={this.state.endDate} onChange={ this.onEndDateChange }/>
+            </label>
+          </div>
+
+          <div className="form-div">
+            <label>Set Reminder<input type="checkbox" checked={this.state.isReminderOn} onChange={this.onReminderCheckboxChange} />
+              <DateTimePicker min={new Date()} value={this.state.reminderDate} onChange={ this.onReminderDateChange }/>
+            </label>
+          </div>
+
+          <TodoList updateTodos={this.updateTodos} todos={this.state.todos} tripID={this.state.ID}/>
+
+          <div className="buttons form-div">
+            <button type="submit">Save</button>
+            { this.cancelButton() }
+            <button type="button" onClick={this.deleteTrip}>Delete</button>
+          </div>
 
         </form>
 
-        <button onClick={this.cancelTrip}>Cancel</button>
-        <button onClick={this.deleteTrip}>Delete</button>
+
       </div>
     )
   }
@@ -89,12 +187,18 @@ class DetailsPanel extends Component {
 
 
 function mapStateToProps(state) {
-  return { selectedTrip: state.selectedTrip };
+  const props = {
+    savedTrips: state.savedTrips,
+    selectedTrip: state.selectedTrip
+  }
+  return props;
 }
 
 function mapDispatchToProps(dispatch) {
   const actions = {
     saveTrip,
+    updateTrip,
+    selectTrip,
     deleteTrip
   };
   return bindActionCreators(actions, dispatch);

@@ -1,11 +1,10 @@
-import { LOAD_TRIPS, SAVE_TRIP, DELETE_TRIP } from '../actions/types';
+import { LOAD_TRIPS, SAVE_TRIP, UPDATE_TRIP, DELETE_TRIP } from '../actions/types';
 
 export default function savedTrips(state = [], action) {
   let nextState;
   switch (action.type) {
 
     case LOAD_TRIPS:
-      console.log(action.payload);
       return action.payload;
 
     case SAVE_TRIP:
@@ -16,9 +15,16 @@ export default function savedTrips(state = [], action) {
       // set the value of the savedTrips in the global state to be the new saved trips array
     	return nextState;
 
+    case UPDATE_TRIP:
+      nextState = state.map( trip => {
+        if (trip.ID === action.payload.ID) return action.payload;
+        else return trip;
+      });
+      localStorage.setItem('trips', JSON.stringify(nextState));
+      return nextState;
+
     case DELETE_TRIP:
-      console.log('state', state);
-      nextState = state.filter( trip => trip.title !== action.payload );
+      nextState = state.filter( trip => trip.ID !== action.payload );
       localStorage.setItem('trips', JSON.stringify(nextState));
     	return nextState;
 

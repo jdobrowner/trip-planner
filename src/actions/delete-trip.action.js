@@ -1,9 +1,9 @@
 import { DELETE_TRIP } from './types';
 
-function deleteTrip(tripTitle) {
+function deleteTrip(tripID) {
   return {
     type: DELETE_TRIP,
-    payload: tripTitle
+    payload: tripID
   }
 }
 

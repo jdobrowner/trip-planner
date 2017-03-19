@@ -1,35 +1,86 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import selectTrip from '../actions/select-trip.action';
 
 class GridPanel extends Component {
   constructor() {
     super();
     this.generateTableRows = this.generateTableRows.bind(this);
+    this.getPlanningState = this.getPlanningState.bind(this);
   }
   generateTableRows() {
-    const savedTripsRows = this.props.savedTrips.map( trip => {
+    const filteredTrips = this.props.savedTrips.filter( trip => {
+      let passThrough = true;
+
+      // if category filter is set, check each trip's category
+      if (this.props.filter.category === 'Vacation') {
+        passThrough = trip.category === 'Vacation';
+      }
+      if (this.props.filter.category === 'Business') {
+        passThrough = trip.category === 'Business';
+      }
+      // if the trip is not of the same category as the filter, move on to next trip
+      if (!passThrough) return false;
+
+      console.log('trip passed so far', trip)
+
+      const keyword = this.props.filter.keyword.toLowerCase();
+      console.log('keyword', keyword);
+
+      const todoFilterPass = trip.todos.reduce((pass, todo) => {
+        return pass || todo.thingToDo.toLowerCase().includes(keyword);
+      }, false);
+      console.log('passed todo filter?', todoFilterPass);
+
+      // if the filter keyword exists within the todo list, title, or destination
+      // add the trip to the filtered list by returning true
+      return todoFilterPass || trip.title.toLowerCase().includes(keyword) || trip.destination.toLowerCase().includes(keyword);
+    });
+
+    const filteredTripsRows = filteredTrips.map( (trip, i) => {
+      // count the todos that are unchecked
+      const thingsToDo = trip.todos.reduce((sum, todo) => {
+        if (!todo.isDone) return sum + 1;
+        else return sum;
+      }, 0);
       return (
-        <tr key={trip.title}>
-          <td>{trip.title}</td>
-          <td>{trip.destination}</td>
-          <td>{trip.description}</td>
-          <td>{trip.category}</td>
+        <tr key={trip.ID}
+          className={ i%2 === 0 ? '' : 'odd-row' }
+          onClick={ () => { this.props.selectTrip({...trip}); }}>
+          <td className="wideCell">{trip.title}</td>
+          <td className="wideCell">{trip.destination}</td>
+          <td className="wideCell">{trip.duration}</td>
+          <td className="wideCell">{trip.category}</td>
+          <td className="wideCell">{trip.isReminderOn ? 'Y' : null }</td>
+          <td className="wideCell">{this.getPlanningState(trip, thingsToDo)}</td>
+          <td className="narrowCell">{thingsToDo}</td>
         </tr>
       )
     });
-    return savedTripsRows;
+    return filteredTripsRows;
+  }
+  getPlanningState(trip, thingsToDo) {
+    if (!thingsToDo) return 'Ready';
+    else if (thingsToDo === trip.todos.length) return 'Created';
+    else return 'In Progress';
   }
   render() {
     return (
       <div className="grid-panel">
-        <h2>Grid Panel</h2>
         <table>
           <thead>
-            <tr>
-              <th>Title</th>
-              <th>Destination</th>
-              <th>Description</th>
-              <th>Category</th>
+            <tr className="odd-row">
+
+              <th className="wideCell">Trip Title</th>
+              <th className="wideCell">Destination</th>
+              <th className="wideCell">Duration</th>
+              <th className="wideCell">Category</th>
+              <th className="wideCell">Reminder Set</th>
+              <th className="wideCell">Planning State</th>
+              <th className="wideCell">Items Needed</th>
+
             </tr>
           </thead>
           <tbody>{this.generateTableRows()}</tbody>
@@ -41,9 +92,15 @@ class GridPanel extends Component {
 
 function mapStateToProps(state) {
   return {
+    filter: state.filter,
     savedTrips: state.savedTrips,
     selectedTrip: state.selectedTrip
    };
 }
 
-export default connect(mapStateToProps)(GridPanel);
+function mapDispatchToProps(dispatch) {
+  const actions = { selectTrip };
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GridPanel);

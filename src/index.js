@@ -13,7 +13,6 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 const savedTrips = JSON.parse(localStorage.getItem('trips'));
-console.log('savedTrips: ', savedTrips);
 if (savedTrips) {
 	store.dispatch({ type: LOAD_TRIPS, payload: savedTrips });
 }

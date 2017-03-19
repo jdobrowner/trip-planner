@@ -1,0 +1,27 @@
+.grid-panel {
+  border: 2px solid blue;
+  overflow: auto;
+
+  h2 {  }
+  tr {
+    // display: flex;
+    // flex-wrap: nowrap;
+  }
+  td, th {
+    width: 90px;
+    height: 40px;
+    text-align: center;
+    padding: 10px 0;
+    border-right: 1px solid grey;
+  }
+  th { font-weight: bold; }
+  .wideCell {
+    min-width: 150px;
+    max-width: 150px;
+  }
+  .narrowCell {
+    min-width: 150px;
+    max-width: 150px;
+  }
+  .odd-row { background-color: #accbcc; }
+}

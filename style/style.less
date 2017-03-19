@@ -1,4 +1,9 @@
 @import 'reset.less';
+@import 'filter-panel.less';
+@import 'grid-panel.less';
+@import 'details-panel.less';
+@import 'widgets/react-widgets.less';
+
 
 h1 {
   font-family: 'Bitter', serif;
@@ -10,6 +15,35 @@ h2 {
   font-weight: 400;
 }
 
-p {
+body {
   font-family: 'Source Sans Pro', sans-serif;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+
+.popup {
+  display: none;
+}
+.popup--visible {
+  display: block;
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  top: 50vh;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -150px;
+  border: 2px solid #5da366;
+  background-color: #86bf8d;
+}
+
+.details-panel {
+  border: 2px solid purple;
+  display: inline-block;
 }
