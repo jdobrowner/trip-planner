@@ -2,11 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { Router, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
 import App from './components/app';
 import reducers from './reducers/root.reducer';
-import routes from './routes';
 import { LOAD_TRIPS, SELECT_TRIP } from './actions/types';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
@@ -23,6 +21,6 @@ if (selectedTrip) {
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router history={browserHistory} routes={routes} />
+		<App />
 	</Provider>,
 	document.querySelector('.container'));
