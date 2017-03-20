@@ -33290,7 +33290,7 @@ var FilterPanel = function (_Component) {
           'form',
           { onSubmit: this.filterGrid },
           _react2.default.createElement(
-            'h3',
+            'h2',
             null,
             'Filter Your Trips'
           ),
@@ -33302,11 +33302,11 @@ var FilterPanel = function (_Component) {
               null,
               'Keyword',
               _react2.default.createElement('br', null),
-              _react2.default.createElement('input', { type: 'text', value: this.state.keyword, onChange: this.onTextChange, placeholder: 'Thailand' })
+              _react2.default.createElement('input', { className: 'keyword', type: 'text', value: this.state.keyword, onChange: this.onTextChange, placeholder: 'Thailand' })
             ),
             _react2.default.createElement(
               'button',
-              { type: 'submit' },
+              { className: 'go', type: 'submit' },
               'Go'
             )
           ),
