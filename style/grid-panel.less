@@ -1,11 +1,15 @@
 .grid-panel {
-  border: 2px solid blue;
   overflow: auto;
 
   h2 {  }
-  tr {
-    // display: flex;
-    // flex-wrap: nowrap;
+  // tr:hover {
+  //   cursor: pointer;
+  // }
+  table:hover {
+    cursor: pointer;
+  }
+  th:hover {
+    cursor: auto;
   }
   td, th {
     width: 90px;
@@ -13,8 +17,11 @@
     text-align: center;
     padding: 10px 0;
     border-right: 1px solid grey;
+    line-height: 1.2;
   }
-  th { font-weight: bold; }
+  th {
+    font-weight: 600;
+  }
   .wideCell {
     min-width: 150px;
     max-width: 150px;
@@ -23,5 +30,5 @@
     min-width: 150px;
     max-width: 150px;
   }
-  .odd-row { background-color: #accbcc; }
+  .odd-row { background-color: @lightBlue; }
 }

@@ -1,22 +1,84 @@
+@darkBlue: #2e3a6c;
+@darkGrey: #53555b;
+@lightBlue: #cee2f2;
+@lightGrey: #d7dce0;
+@red: #d97e62;
+@green: #537d5a;
+@inputWidth: 200px;
+
 @import 'reset.less';
 @import 'filter-panel.less';
 @import 'grid-panel.less';
 @import 'details-panel.less';
 @import 'widgets/react-widgets.less';
 
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  color: @darkGrey;
+}
 
 h1 {
-  font-family: 'Bitter', serif;
   font-weight: 700;
+  font-size: 1.8em;
+  padding-bottom: 10px;
 }
 
 h2 {
-  font-family: 'Bitter', serif;
-  font-weight: 400;
+  margin-top: 20px;
+  font-size: 1.3em;
+  font-weight: 600;
 }
 
-body {
-  font-family: 'Source Sans Pro', sans-serif;
+
+
+input {
+  height: 30px;
+  width: @inputWidth;
+  border-radius: 3px;
+  border: 1px solid @darkGrey;
+  color: @darkGrey;
+  padding: 0 10px;
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+  outline: none;
+}
+
+input, select, textarea, button {
+  font-size: 0.9em;
+}
+
+select {
+  height: 30px;
+  width: @inputWidth;
+  border-radius: 3px;
+  border: 1px solid @darkGrey;
+  color: @darkGrey;
+  background-color: white;
+}
+select:hover {
+  cursor: pointer;
+}
+
+textarea {
+  height: 90px;
+  width: @inputWidth;
+  line-height: 1.2;
+  border-radius: 3px;
+  border: 1px solid @darkGrey;
+  color: @darkGrey;
+  padding: 10px;
+}
+
+button {
+  height: 30px;
+}
+button:hover {
+  cursor: pointer;
+}
+
+label {
+  // font-size: 0.9em;
 }
 
 .app {
@@ -43,7 +105,6 @@ body {
   background-color: #86bf8d;
 }
 
-.details-panel {
-  border: 2px solid purple;
+.details-panel, .filter-panel, .grid-panel {
   display: inline-block;
 }

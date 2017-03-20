@@ -35,20 +35,19 @@ class FilterPanel extends Component {
       <div className="filter-panel">
 
         <div className="logo">
-          <h1>Travel Time</h1>
-          <h2>Trip Planner</h2>
+          <h1>Trip Planner</h1>
         </div>
 
         <button className="new-trip" onClick={this.onNewTripClicked}>New Trip</button>
 
         <form onSubmit={this.filterGrid}>
-          <h3>Filter Your Trips</h3>
+          <h2>Filter Your Trips</h2>
 
           <div>
             <label>Keyword<br/>
-              <input type="text" value={this.state.keyword} onChange={this.onTextChange} placeholder="Thailand" />
+              <input className="keyword" type="text" value={this.state.keyword} onChange={this.onTextChange} placeholder="Thailand" />
             </label>
-            <button type="submit">Go</button>
+            <button className="go" type="submit">Go</button>
           </div>
 
           <div>
