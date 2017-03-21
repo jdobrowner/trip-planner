@@ -7,15 +7,21 @@ import Moment from 'moment';
 var momentLocalizer = require('react-widgets/lib/localizers/moment');
 momentLocalizer(Moment);
 
+// action creators
 import saveTrip from '../actions/save-trip.action';
 import updateTrip from '../actions/update-trip.action';
 import selectTrip from '../actions/select-trip.action';
 import deleteTrip from '../actions/delete-trip.action';
+
+// child component
 import TodoList from './todo-list.js';
+
+
 
 class DetailsPanel extends Component {
   constructor() {
     super();
+    // this binding for all custom methods
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onDestinationChange = this.onDestinationChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
@@ -64,9 +70,9 @@ class DetailsPanel extends Component {
     this.setState({ reminderDate: value });
   }
   onReminderCheckboxChange(event) {
-    console.log('reminder input event', event)
     this.setState({ isReminderOn: !this.state.isReminderOn });
   }
+  // This method is called by the TodoList child component
   updateTodos(todos) {
     this.setState({ todos });
   }
@@ -74,6 +80,7 @@ class DetailsPanel extends Component {
     event.preventDefault();
     const trip = { ...this.state };
 
+    // Do not save if the set reminder checkbox is checked but there is no reminder date&time
     if (trip.isReminderOn && !trip.reminderDate) {
       alert('Please pick a reminder date and time.');
     }
@@ -88,6 +95,8 @@ class DetailsPanel extends Component {
       this.props.selectTrip(trip);
     }
   }
+  // This method decides if the cancel button should be rendered or not
+  // It will render if a saved trip is being displayed in the details panel
   cancelButton() {
     if (this.props.selectedTrip.ID) return <button type="button" className='cancel-button' onClick={this.cancelTrip}>Cancel</button>
   }
@@ -99,6 +108,9 @@ class DetailsPanel extends Component {
     this.props.deleteTrip(tripID);
     this.props.selectTrip({});
   }
+  // This method sets the local state of the selcted trip to display.
+  // It is called when the DetailsPanel mounts to the DOM,
+  // or when a different trip is selected or a new trip created
   setTripState(trip) {
     this.setState({
       ID: trip.ID || new Date().getTime(),
@@ -191,13 +203,13 @@ class DetailsPanel extends Component {
 
         </form>
 
-
       </div>
     )
   }
 }
 
-
+// Map the local props to chosen parts of the global state.
+// Global state.savedTrips will be refered to as this.props.savedTrips in DetailsPanel(read only)
 function mapStateToProps(state) {
   const props = {
     savedTrips: state.savedTrips,
@@ -206,6 +218,8 @@ function mapStateToProps(state) {
   return props;
 }
 
+// Map action creators to this.props
+// Calling this.props.saveTrip(trip) will dispatch an action that will update the global state
 function mapDispatchToProps(dispatch) {
   const actions = {
     saveTrip,
@@ -216,4 +230,5 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
+// Connect the DetailsPanel to global state and imported action creators
 export default connect(mapStateToProps, mapDispatchToProps)(DetailsPanel);

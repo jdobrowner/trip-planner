@@ -32,7 +32,6 @@ h2 {
 input, textarea, .Select-control {
   font-size: 0.9em;
   margin-top: 6px;
-
 }
 
 input {
@@ -43,16 +42,15 @@ input {
   padding: 0 10px;
 }
 
+button {
+  border-radius: 3px;
+}
+button:hover {
+  cursor: pointer;
+}
+
 input:focus, select:focus, textarea:focus, button:focus, .dt-picker, .selectbox {
   outline: none;
-}
-// .is-focused.Select-control {
-//   border: none;
-//   box-shadow: none;
-// }
-
-input, select, textarea, button {
-
 }
 
 .Select-control {
@@ -63,32 +61,27 @@ input, select, textarea, button {
   background-color: white;
   border: 1px solid @darkGrey;
   padding-left: 10px;
-
-  // -webkit-appearance: none;
-
-  // -webkit-user-select: none;
-  //      -moz-user-select: none;
-  //       -ms-user-select: none;
-  //           user-select: none;
-
-    // -webkit-appearance: none;
-       //-moz-appearance: radio-container;
-            // appearance: none;
-
 }
 .Select-control:hover {
   cursor: pointer;
 }
 
-
-button {
-  border-radius: 3px;
+.ReactModal__Content {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  marginRight: -50%;
+  transform: translate(-50%, -50%);
+  h2 { padding: 10px 0 20px 10px; }
+  button, select {
+    background-color: #a0c1e0;
+    padding: 10px;
+    margin: 10px;
+    height: 40px;
+  }
+  select { width: 120px; }
 }
-button:hover {
-  cursor: pointer;
-}
-
-
 
 .app {
   max-width: 1600px;
@@ -99,12 +92,6 @@ button:hover {
   align-items: stretch;
 }
 
-
-
-
-.details-panel, .filter-panel, .grid-panel {
-  display: inline-block;
-}
 
 @media only screen and (min-width: 1600px)  {
   .filter-panel, .grid-panel, .details-panel { background-color: white; }

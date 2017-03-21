@@ -11,6 +11,7 @@ class GridPanel extends Component {
     this.getPlanningState = this.getPlanningState.bind(this);
   }
   generateTableRows() {
+    // filteredTrips returns an array of saved trip that pass the filter keyword
     const filteredTrips = this.props.savedTrips.filter( trip => {
       let passThrough = true;
 
@@ -35,12 +36,15 @@ class GridPanel extends Component {
       return todoFilterPass || trip.title.toLowerCase().includes(keyword) || trip.destination.toLowerCase().includes(keyword);
     });
 
+    // filteredTripsRows returns an array of html table rows of the filtered Trips
+    // and also counts the number to be displayed in the 'Items Needed' cell for each row
     const filteredTripsRows = filteredTrips.map( (trip, i) => {
       // count the todos that are unchecked
       const thingsToDo = trip.todos.reduce((sum, todo) => {
         if (!todo.isDone) return sum + 1;
         else return sum;
       }, 0);
+
       return (
         <tr key={trip.ID}
           className={ i%2 === 0 ? '' : 'odd-row' }
@@ -86,6 +90,8 @@ class GridPanel extends Component {
   }
 }
 
+// Map the local props to chosen parts of the global state.
+// Global state.savedTrips will be refered to as this.props.savedTrips in GridPanel(read only)
 function mapStateToProps(state) {
   return {
     filter: state.filter,
@@ -94,9 +100,12 @@ function mapStateToProps(state) {
    };
 }
 
+// Map action creators to this.props
+// Calling this.props.selectTrip(trip) will dispatch an action that will update the global state
 function mapDispatchToProps(dispatch) {
   const actions = { selectTrip };
   return bindActionCreators(actions, dispatch);
 }
 
+// Connect the GridPanel to global state and imported action creators
 export default connect(mapStateToProps, mapDispatchToProps)(GridPanel);

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Select from 'react-select';
+
+// action creators
 import selectTrip from '../actions/select-trip.action';
 import filterTrips from '../actions/filter-trips.action';
 
@@ -9,6 +11,7 @@ import filterTrips from '../actions/filter-trips.action';
 class FilterPanel extends Component {
   constructor() {
     super();
+    // default state of Filter Panel
     this.state = { keyword: '', category: 'None' };
     this.onTextChange = this.onTextChange.bind(this);
     this.onCategoryChange = this.onCategoryChange.bind(this);
@@ -20,13 +23,16 @@ class FilterPanel extends Component {
   }
   onCategoryChange(option) {
     const category = option.value;
-    console.log(category);
     this.setState({ category });
+
+    // The filter-trips action will effect the trips displayed in GridPanel
+    // in this case setting the category filter
     this.props.filterTrips({ ...this.state, category });
   }
   onNewTripClicked() {
     this.props.selectTrip({});
   }
+  // Called when the form is submitted by clicking the Go button or hitting enter from the keyword text input
   filterGrid(event) {
     event.preventDefault();
     this.props.filterTrips({ ...this.state });
@@ -51,8 +57,6 @@ class FilterPanel extends Component {
             <button className="go" type="submit">Go</button>
           </div>
 
-
-
           <div>
             <label>Category<br/>
               <Select
@@ -67,19 +71,19 @@ class FilterPanel extends Component {
             </label>
           </div>
 
-
-
         </form>
-
 
       </div>
     )
   }
 }
 
+// Map action creators to this.props
+// Calling this.props.filterTrips(filter) will dispatch an action that will update the global state
 function mapDispatchToProps(dispatch) {
   const actions = { selectTrip, filterTrips };
   return bindActionCreators(actions, dispatch);
 }
 
+// Connect the FilterPanel to imported action creators
 export default connect(null, mapDispatchToProps)(FilterPanel);

@@ -9,6 +9,8 @@ class TodoList extends Component {
     this.deleteTodo = this.deleteTodo.bind(this);
     this.getTodos = this.getTodos.bind(this);
   }
+  // adds a todo object in the todos array of the local state of DetailsPanel,
+  // called when the add todo button of TodoList is clicked
   addTodo() {
     const todos = [...this.props.todos, {
       thingToDo: '',
@@ -16,15 +18,21 @@ class TodoList extends Component {
     }];
     this.props.updateTodos( todos );
   }
+  // updates a todo object in the todos array of the local state of DetailsPanel,
+  // called when a text is changed or checkbox clicked in child Todo
   updateTodo(todo, index) {
     let todos = this.props.todos;
     todos = [ ...todos.slice(0, index), todo, ...todos.slice(index + 1) ];
     this.props.updateTodos( todos );
   }
+  // removes a todo object from the todos array of the local state of DetailsPanel,
+  // called when a delete button of a child Todo is clicked
   deleteTodo(index) {
     const todos = this.props.todos.slice(0,index).concat(this.props.todos.slice(index+1));
     this.props.updateTodos( todos );
   }
+  // for all todo objects in the todos array from the local state of DetailsPanel,
+  // create a child Todo
   getTodos() {
     return this.props.todos.map( (todo, i) => {
       return <Todo key={todo.thingToDo + i} thingToDo={todo.thingToDo}
@@ -39,6 +47,7 @@ class TodoList extends Component {
     // only rerender todo list if a different trip is selected
     if (nextProps.tripID === this.props.tripID) return false;
 
+    // update TodoList for any other prop change
     return true;
   }
   render() {
@@ -50,8 +59,6 @@ class TodoList extends Component {
           {this.getTodos()}
         </div>
       </div>
-
-
     )
   }
 }
