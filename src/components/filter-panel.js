@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Select from 'react-select';
 import selectTrip from '../actions/select-trip.action';
 import filterTrips from '../actions/filter-trips.action';
 
@@ -17,8 +18,9 @@ class FilterPanel extends Component {
   onTextChange(event) {
     this.setState({ keyword: event.target.value });
   }
-  onCategoryChange(event) {
-    const category = event.target.value;
+  onCategoryChange(option) {
+    const category = option.value;
+    console.log(category);
     this.setState({ category });
     this.props.filterTrips({ ...this.state, category });
   }
@@ -44,23 +46,30 @@ class FilterPanel extends Component {
 
           <div>
             <label>Keyword<br/>
-              <input className="keyword" type="text" value={this.state.keyword} onChange={this.onTextChange} placeholder="Thailand" />
+              <input className="keyword" type="text" value={this.state.keyword} onChange={this.onTextChange} />
             </label>
             <button className="go" type="submit">Go</button>
           </div>
 
+
+
           <div>
             <label>Category<br/>
-              <select value={this.state.category} onChange={this.onCategoryChange}>
-                <option value="None">None</option>
-                <option value="Vacation">Vacation</option>
-                <option value="Business">Business</option>
-              </select>
+              <Select
+                value={this.state.category} onChange={this.onCategoryChange}
+                searchable={false} clearable={false}
+                options={[
+                  { value: 'None', label: 'None' },
+                  { value: 'Vacation', label: 'Vacation' },
+                  { value: 'Business', label: 'Business' },
+                ]}
+              />
             </label>
           </div>
 
-        </form>
 
+
+        </form>
 
 
       </div>

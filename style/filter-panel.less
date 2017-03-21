@@ -13,7 +13,11 @@
     h1 { padding-bottom: 5px; }
   }
 
+  h2 {
+    margin-top: 20px;
+  }
 
+  input { }
 
   .keyword {
     width: 160px;
@@ -32,18 +36,14 @@
     background-color: white;
     transition: 0.08s;
     font-weight: 600;
+    font-size: 0.9em;
   }
   .go:hover {
     background-color: @green;
     color: white;
   }
 
-  button {
-    border-radius: 3px;
-  }
-  button:hover {
 
-  }
   .new-trip {
     height: 40px;
     width: @inputWidth;
@@ -59,15 +59,22 @@
     color: white;
   }
 
+  .Select-control, .Select-menu-outer {
+    width: @inputWidth;
+  }
+
   form {
     padding: 30px 0;
     div { padding-top: 20px; }
+    .Select {
+      padding-top: 0;
+      div { padding-top: 0; }
+    }
   }
 
   label { }
 
   h3 {  }
 
-  input, select { margin-top: 10px; }
 
 }

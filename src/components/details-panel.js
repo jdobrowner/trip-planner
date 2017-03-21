@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Select from 'react-select';
 import { Calendar, DateTimePicker } from 'react-widgets';
 import Moment from 'moment';
 var momentLocalizer = require('react-widgets/lib/localizers/moment');
@@ -39,8 +40,8 @@ class DetailsPanel extends Component {
   onDescriptionChange(event) {
     this.setState({ description: event.target.value });
   }
-  onCategoryChange(event) {
-    this.setState({ category: event.target.value });
+  onCategoryChange(option) {
+    this.setState({ category: option.value });
   }
   onStartDateChange(value) {
     this.setState({ startDate: value });
@@ -88,7 +89,7 @@ class DetailsPanel extends Component {
     }
   }
   cancelButton() {
-    if (this.props.selectedTrip.ID) return <button type="button" onClick={this.cancelTrip}>Cancel</button>
+    if (this.props.selectedTrip.ID) return <button type="button" className='cancel-button' onClick={this.cancelTrip}>Cancel</button>
   }
   cancelTrip() {
     this.setTripState({ ...this.props.selectedTrip });
@@ -123,9 +124,12 @@ class DetailsPanel extends Component {
     return (
       <div className="details-panel">
 
+        <h2>Trip Details</h2>
+
         <form onSubmit={this.saveTrip}>
+
           <div className="form-div">
-            <label>Trip Title<br/>
+            <label>Title<br/>
               <input type="text" value={this.state.title} onChange={this.onTitleChange} autoFocus="autofocus" />
             </label>
           </div>
@@ -144,39 +148,45 @@ class DetailsPanel extends Component {
 
           <div className="form-div">
             <label>Category<br/>
-              <select value={this.state.category} onChange={this.onCategoryChange}>
-                <option value="None">None</option>
-                <option value="Vacation">Vacation</option>
-                <option value="Business">Business</option>
-              </select>
+            <Select
+              value={this.state.category} onChange={this.onCategoryChange}
+              searchable={false} clearable={false}
+              options={[
+                { value: 'None', label: 'None' },
+                { value: 'Vacation', label: 'Vacation' },
+                { value: 'Business', label: 'Business' },
+              ]}
+            />
             </label>
           </div>
 
           <div className="form-div">
             <label>Start Date<br/>
-              <DateTimePicker time={false} min={new Date()} value={this.state.startDate}
+              <DateTimePicker className="dt-picker" time={false} min={new Date()} value={this.state.startDate}
                 onChange={ this.onStartDateChange }/>
             </label>
           </div>
 
           <div className="form-div">
             <label>End Date<br/>
-              <DateTimePicker time={false} min={this.state.startDate || new Date()}
+              <DateTimePicker className="dt-picker" time={false} min={this.state.startDate || new Date()}
                 value={this.state.endDate} onChange={ this.onEndDateChange }/>
             </label>
           </div>
 
           <div className="form-div">
-            <label>Set Reminder<input type="checkbox" checked={this.state.isReminderOn} onChange={this.onReminderCheckboxChange} /></label>
-              <DateTimePicker min={new Date()} value={this.state.reminderDate} onChange={ this.onReminderDateChange }/>
+            <div className="set-reminder"><label>Set Reminder<input type="checkbox" className="check-box"
+              checked={this.state.isReminderOn} onChange={this.onReminderCheckboxChange} /></label></div>
+              <DateTimePicker className="dt-picker" min={new Date()}
+                value={this.state.reminderDate} onChange={ this.onReminderDateChange }/>
           </div>
 
           <TodoList updateTodos={this.updateTodos} todos={this.state.todos} tripID={this.state.ID}/>
 
           <div className="buttons form-div">
-            <button type="submit">Save</button>
+            <button type="submit" className='save-button'>Save</button>
             { this.cancelButton() }
-            <button type="button" onClick={this.deleteTrip}>Delete</button>
+            <button type="button" className='delete-button' onClick={this.deleteTrip}>Delete</button>
           </div>
 
         </form>

@@ -16,19 +16,25 @@
     height: 40px;
     text-align: center;
     padding: 10px 0;
-    border-right: 1px solid grey;
+    border-right: 1px solid @darkGrey;
     line-height: 1.2;
   }
   th {
     font-weight: 600;
   }
-  .wideCell {
-    min-width: 150px;
-    max-width: 150px;
+  .last-cell { border-right: none; }
+  .wide-cell {
+    min-width: 200px;
+    max-width: 200px;
   }
-  .narrowCell {
-    min-width: 150px;
-    max-width: 150px;
+  .medium-cell {
+    min-width: 160px;
+    max-width: 160px;
+  }
+  .narrow-cell {
+    min-width: 120px;
+    max-width: 120px;
   }
   .odd-row { background-color: @lightBlue; }
+  .fa-check { color: @green; }
 }

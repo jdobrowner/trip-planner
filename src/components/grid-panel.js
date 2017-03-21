@@ -45,13 +45,13 @@ class GridPanel extends Component {
         <tr key={trip.ID}
           className={ i%2 === 0 ? '' : 'odd-row' }
           onClick={ () => { this.props.selectTrip({...trip}); }}>
-          <td className="wideCell">{trip.title}</td>
-          <td className="wideCell">{trip.destination}</td>
-          <td className="wideCell">{trip.duration}</td>
-          <td className="wideCell">{trip.category}</td>
-          <td className="wideCell">{trip.isReminderOn ? 'Y' : null }</td>
-          <td className="wideCell">{this.getPlanningState(trip, thingsToDo)}</td>
-          <td className="narrowCell">{thingsToDo}</td>
+          <td className="wide-cell">{trip.title}</td>
+          <td className="wide-cell">{trip.destination}</td>
+          <td className="narrow-cell">{trip.duration}</td>
+          <td className="medium-cell">{trip.category}</td>
+          <td className="narrow-cell">{trip.isReminderOn ? <i className="fa fa-check" onClick={this.props.previousSlide} aria-hidden="true"></i> : null }</td>
+          <td className="medium-cell">{this.getPlanningState(trip, thingsToDo)}</td>
+          <td className="narrow-cell last-cell">{thingsToDo}</td>
         </tr>
       )
     });
@@ -69,13 +69,13 @@ class GridPanel extends Component {
           <thead>
             <tr className="odd-row">
 
-              <th className="wideCell">Trip Title</th>
-              <th className="wideCell">Destination</th>
-              <th className="wideCell">Duration</th>
-              <th className="wideCell">Category</th>
-              <th className="wideCell">Reminder Set</th>
-              <th className="wideCell">Planning State</th>
-              <th className="wideCell">Items Needed</th>
+              <th className="wide-cell">Trip Title</th>
+              <th className="wide-cell">Destination</th>
+              <th className="narrow-cell">Duration</th>
+              <th className="medium-cell">Category</th>
+              <th className="narrow-cell">Reminder Set</th>
+              <th className="medium-cell">Planning State</th>
+              <th className="narrow-cell last-cell">Items Needed</th>
 
             </tr>
           </thead>

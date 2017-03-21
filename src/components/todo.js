@@ -21,11 +21,11 @@ class Todo extends Component {
     return (
       <div className="todo">
         <label>
-          <input type="checkbox" checked={this.state.isDone} onChange={this.onCheckboxChange} />
-          <input type="text" value={this.state.thingToDo} onChange={this.onThingToDoChange} />
+          <input type="checkbox" className="todo-checkbox" checked={this.state.isDone} onChange={this.onCheckboxChange} />
+          <input type="text" className="todo-text" value={this.state.thingToDo} onChange={this.onThingToDoChange} />
         </label>
         <button type="button" className="todo-delete"
-          onClick={()=>this.props.deleteTodo(this.props.index)}>Delete</button>
+          onClick={()=>this.props.deleteTodo(this.props.index)}>x</button>
       </div>
 
 

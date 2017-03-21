@@ -45,7 +45,7 @@ class TodoList extends Component {
     return (
       <div className="todo-list form-div">
         <label>Todo</label>
-        <button type="button" onClick={this.addTodo}>+</button>
+        <button type="button" className="todo-button" onClick={this.addTodo}>+</button>
         <div className="todos">
           {this.getTodos()}
         </div>
